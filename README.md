@@ -12,12 +12,5 @@
 
 ## 依赖
 
-* 简化字八股文 [℞ essay-simp](https://github.com/rime/rime-essay-simp)
-* 袖珍简化字拼音 [℞ pinyin-simp](https://github.com/rime/rime-pinyin-simp)（拼音反查用）
-
-## 安装
-
-1. 确保已安装上述依赖方案。
-2. 将 `lnn_xdi8.schema.yaml` 及相关文件放入 RIME 用户文件夹。
-3. 重新部署 RIME。
-
+* [℞ essay-simp](https://github.com/rime/rime-essay-simp) 简化字八股文
+* [℞ pinyin-simp](https://github.com/rime/rime-pinyin-simp) 袖珍简化字拼音（拼音反查用）
