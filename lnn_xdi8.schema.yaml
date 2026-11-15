@@ -58,40 +58,34 @@ speller:
     # 省略后卜
     - derive/H$//
     # 省略前中间部首
-    - derive/^([1-8ABDEFLNTVYa-z])[1-8ABDEFHLNTVYa-z]([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$1$2/correction
+    - derive/^([1-8ABDEFLNTVYa-z])[1-8ABDEFHLNTVYa-z]([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$1$2/
     # 省略后中间部首
-    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?[1-8ABDEFHLNTVYa-z]([1-8ABDEFLNTVYa-z])/$1$2$3/correction
+    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?[1-8ABDEFHLNTVYa-z]([1-8ABDEFLNTVYa-z])/$1$2$3/
     # 前双部首逆序
-    - derive/^([1-8ABDEFLNTVYa-z])([1-8ABDEFLNTVYa-z])([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$2$1$3/correction
+    - fuzz/^([1-8ABDEFLNTVYa-z])([1-8ABDEFLNTVYa-z])([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$2$1$3/
     # 后双部首逆序
-    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?([1-8ABDEFLNTVYa-z])([1-8ABDEFLNTVYa-z])/$1$2$4$3/correction
+    - fuzz/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?([1-8ABDEFLNTVYa-z])([1-8ABDEFLNTVYa-z])/$1$3$2/
     # 1s其他拼法
     - derive/^([1-8ABDEFHLNTVYa-z]*)([dtl])(1s)/$1$2is/
     # 不完整拼式
     - abbrev/^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo]).+/$1$2/
     - abbrev/^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z][iu]?)[12368AELTVYaeo].*/$1$2/
     - abbrev/^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])[iu]$/$1$2/
-    # 唇化声母拆分
-    - derive/^([1-8ABDEFHLNTVYa-z]*)5([12368AELTVYaeo])/$1Nu$2/correction
-    - derive/^([1-8ABDEFHLNTVYa-z]*)v([12368AELTVYaeo])/$1lu$2/correction
-    - derive/^([1-8ABDEFHLNTVYa-z]*)F([12368AELTVYaeo])/$1du$2/correction
-    - derive/^([1-8ABDEFHLNTVYa-z]*)7([12368AELTVYaeo])/$1tu$2/correction
-    - derive/^([1-8ABDEFHLNTVYa-z]*)B([12368AELTVYaeo])/$1gu$2/correction
-    - derive/^([1-8ABDEFHLNTVYa-z]*)c([12368AELTVYaeo])/$1ku$2/correction
-    - derive/^([1-8ABDEFHLNTVYa-z]*)h([12368AELTVYaeo])/$1fu$2/correction
     # 前/后部首模糊
-    - derive/^([1-8ABDEFHLNTVYa-z])([1-8ABDEFHLNTVYa-z]?)([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$3$2$1/correction
-    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?([1-8ABDEFHLNTVYa-z])([1-8ABDEFHLNTVYa-z]?)$/$3$2$1/correction
+    - fuzz/^([1-8ABDEFHLNTVYa-z])([1-8ABDEFHLNTVYa-z]?)([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$3$2$1/
+    - fuzz/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?([1-8ABDEFHLNTVYa-z])([1-8ABDEFHLNTVYa-z]?)$/$3$2$1/
     # 移除主音节结束标识
-    - erase/'/
+    - xform/'//
 
 translator:
   dictionary: lnn_xdi8
   spelling_hints: 5
   enable_completion: true
-  preedit_format: &pua
+  preedit_format:
     - xlit/bpmwjqxynzDsrHNldtgkh45vF7BcfuaoeEAYL62T83V1i//
-  comment_format: *pua
+  comment_format: &comment_alg
+    - xlit/bpmwjqxynzDsrHNldtgkh45vF7BcfuaoeEAYL62T83V1i//
+    - xform/'//
 
 custom_phrase:
   dictionary: ""
@@ -114,7 +108,7 @@ reverse_lookup:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
     - xform/([jqxy])v/$1u/
-  comment_format: *pua
+  comment_format: *comment_alg
 
 punctuator:
   import_preset: default
