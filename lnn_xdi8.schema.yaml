@@ -1,0 +1,140 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: lnn_xdi8
+  name: 希顶·聊天字母
+  version: "1.0"
+  author:
+    - DGCK81LNN <triluolnn@163.com>
+    - 希顶社区
+  description: |
+    〇改希顶语简体字输入方案，使用聊天字母，支持部首简单模糊匹配，Shift+Q/W/S/Z/X/C 选择候选，` 进入拼音反查。
+
+    依赖简化字八股文〔℞ essay-simp〕；拼音反查依赖袖珍简化字拼音〔℞ pinyin-simp〕。
+  dependencies:
+    - pinyin_simp
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    states: [ 。，, ．， ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - table_translator@custom_phrase
+    - reverse_lookup_translator
+    - script_translator
+
+menu:
+  alternative_select_keys: "QWSZXC"
+
+speller:
+  alphabet: bpmwjqxynzDsrHNldtgkh45vF7BcfuaoeEAYL62T83V1i
+  delimiter: " '"
+  algebra:
+    # 省略前卜
+    - derive/^H([1-8ABDEFHLNTVYa-z]?)([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$1$2/
+    # 省略后卜
+    - derive/H$//
+    # 省略前中间部首
+    - derive/^([1-8ABDEFLNTVYa-z])[1-8ABDEFHLNTVYa-z]([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$1$2/correction
+    # 省略后中间部首
+    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?[1-8ABDEFHLNTVYa-z]([1-8ABDEFLNTVYa-z])/$1$2$3/correction
+    # 前双部首逆序
+    - derive/^([1-8ABDEFLNTVYa-z])([1-8ABDEFLNTVYa-z])([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$2$1$3/correction
+    # 后双部首逆序
+    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?([1-8ABDEFLNTVYa-z])([1-8ABDEFLNTVYa-z])/$1$2$4$3/correction
+    # 1s其他拼法
+    - derive/^([1-8ABDEFHLNTVYa-z]*)([dtl])(1s)/$1$2is/
+    # 不完整拼式
+    - abbrev/^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo]).+/$1$2/
+    - abbrev/^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z][iu]?)[12368AELTVYaeo].*/$1$2/
+    - abbrev/^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])[iu]$/$1$2/
+    # 唇化声母拆分
+    - derive/^([1-8ABDEFHLNTVYa-z]*)5([12368AELTVYaeo])/$1Nu$2/correction
+    - derive/^([1-8ABDEFHLNTVYa-z]*)v([12368AELTVYaeo])/$1lu$2/correction
+    - derive/^([1-8ABDEFHLNTVYa-z]*)F([12368AELTVYaeo])/$1du$2/correction
+    - derive/^([1-8ABDEFHLNTVYa-z]*)7([12368AELTVYaeo])/$1tu$2/correction
+    - derive/^([1-8ABDEFHLNTVYa-z]*)B([12368AELTVYaeo])/$1gu$2/correction
+    - derive/^([1-8ABDEFHLNTVYa-z]*)c([12368AELTVYaeo])/$1ku$2/correction
+    - derive/^([1-8ABDEFHLNTVYa-z]*)h([12368AELTVYaeo])/$1fu$2/correction
+    # 前/后部首模糊
+    - derive/^([1-8ABDEFHLNTVYa-z])([1-8ABDEFHLNTVYa-z]?)([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])/$3$2$1/correction
+    - derive/^([dtl]1s|[457BDFHNbcdfghj-np-tv-z][iu]?[12368AELTVYaeo])'?([1-8ABDEFHLNTVYa-z])([1-8ABDEFHLNTVYa-z]?)$/$3$2$1/correction
+    # 移除主音节结束标识
+    - erase/'/
+
+translator:
+  dictionary: lnn_xdi8
+  spelling_hints: 5
+  enable_completion: true
+  preedit_format: &pua
+    - xlit/bpmwjqxynzDsrHNldtgkh45vF7BcfuaoeEAYL62T83V1i//
+  comment_format: *pua
+
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 1
+
+#abc_segmentor:
+#  extra_tags:
+#    - reverse_lookup
+
+reverse_lookup:
+  dictionary: pinyin_simp
+  prefix: "`"
+  suffix: "'"
+  tips: 〔拼音〕
+  preedit_format:
+    - xform/([nl])v/$1ü/
+    - xform/([nl])ue/$1üe/
+    - xform/([jqxy])v/$1u/
+  comment_format: *pua
+
+punctuator:
+  import_preset: default
+  full_shape:
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+  patterns:
+    reverse_lookup: "`[a-z]*'?$"
+
+    # 因方案使用大写，大写recognizer不能从中途开始匹配；开头添加^
+    uppercase: "^[A-Z][-_+.'0-9A-Za-z]*$"
+
+style:
+  font_face: XegoeUINewExt, XEGOEPUAall, Segoe UI, Source Han Sans CN, Source Han Sans SC, Noto Sans SC, Noto Sans CJK SC, Plangothic P1, Plangothic P2
+  comment_font_face: XegoeUINewExt, XEGOEPUAall, Segoe UI
+
+__patch:
+  - grammar:/hans?
+  - lnn_xdi8.custom:/patch?
